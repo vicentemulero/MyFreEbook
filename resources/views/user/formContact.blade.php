@@ -9,8 +9,9 @@
                     <div class="card-header">Formulario de contacto</div>
 
                     <div class="card-body">
-                        <form action="#">
+                        <form action="{{ route('SendEmail.store') }}" method="POST">
                             @csrf
+
 
                             <div class="form-group row">
                                 <label for="name" class="col-md-4 col-form-label text-md-right">Nombre *</label>
@@ -46,11 +47,12 @@
                                     contacto *</label>
 
                                 <div class="col-11 col-md-6">
-                                    <select class="form-control" id="reasonSelect">
+                                    <select class="form-control" name="reason" id="reasonSelect">
                                         <option value="0" disabled selected>Selecciona un motivo</option>
                                         <option disabled></option>
-                                        <option value="1">Reestablecer contraseña</option>
-                                        <option value="2">Otro</option>
+                                        <option value="Reestablecer contraseña">Reestablecer contraseña</option>
+                                        <option value="Aportar libro">Aportar un libro</option>
+                                        <option value="Otro">Otro</option>
                                     </select>
                                 </div>
                             </div>
@@ -59,7 +61,7 @@
                                 <div class="form-group row">
                                     <label for="contactText" class="col-md-4 col-form-label text-md-right">Mensaje *</label>
                                     <div class="col-md-6">
-                                        <textarea class="form-control" id="contactText" rows="4"
+                                        <textarea class="form-control"  name="contactText" id="contactText" rows="4"
                                             placeholder="Déjanos tu mensaje ..." required></textarea>
                                     </div>
                                 </div>

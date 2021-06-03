@@ -11,7 +11,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\MessagesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,6 +32,8 @@ Route::get('index/about', [IndexController::class, 'about'])->name('index.about'
 Route::resource('index', IndexController::class);
 
 Auth::routes();
+
+Route::resource('SendEmail', MessagesController::class);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::resource('AdminAuthor', AdminAuthorController::class);
