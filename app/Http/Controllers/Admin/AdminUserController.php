@@ -13,10 +13,14 @@ use Illuminate\Support\Facades\Log;
 class AdminUserController extends Controller
 {
 
+    /**
+     *Allows access only to the administrator user
+     */
     public function __construct()
     {
         $this->middleware('admin');
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -45,7 +49,6 @@ class AdminUserController extends Controller
      */
     public function store(Request $request)
     {
-
     }
 
     /**
@@ -56,7 +59,6 @@ class AdminUserController extends Controller
      */
     public function show($id)
     {
-
     }
 
     /**
@@ -80,11 +82,19 @@ class AdminUserController extends Controller
      */
     public function update(Request $request)
     {
-        $user = request()->all();
-        $user['password']= Hash::make($user['password']);
-        User::findOrFail($user['id'])->update($user);
-        Log::info("Usuario con id: ".$user['id']." modificado con éxito");
-        return redirect()->route('AdminUser.index')->with('success','Usuario modificado con éxito');
+        try {
+            $newPassword = $request->get('newPassword');
+            $user = request()->except('_token', 'id');
+            if (!empty($newPassword)) {
+                $user['password'] = Hash::make($newPassword);
+            }
+            User::findOrFail($request->get('id'))->update($user);
+            Log::info("Datos editados del usuario con id: " . $request->get('id') . " por el administrador");
+            return redirect()->route('AdminUser.index')->with('success', 'Usuario editado con éxito');
+        } catch (Exception $e) {
+            Log::warning("El usuario con id: " . $request->get('id') . " no se ha podido modificar desde el panel de control");
+            return redirect()->route('AdminUser.index')->with('danger', 'El usuario no se ha podido modificar');
+        }
     }
 
     /**
@@ -99,10 +109,10 @@ class AdminUserController extends Controller
         try {
             $user->delete();
             Log::info("Usuario con id: $id eliminado con éxito");
-            return redirect()->route('AdminUser.index')->with('success','Usuario eliminado con éxito');
+            return redirect()->route('AdminUser.index')->with('success', 'Usuario eliminado con éxito');
         } catch (Exception $e) {
             Log::error("No se ha podido eliminar al usuario con id: $id");
-            return redirect()->route('AdminUser.index')->with('error','No se ha podido eliminar el usuario.');
+            return redirect()->route('AdminUser.index')->with('error', 'No se ha podido eliminar el usuario.');
         }
     }
 }

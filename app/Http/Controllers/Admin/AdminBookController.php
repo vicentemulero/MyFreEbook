@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Storage;
 class AdminBookController extends Controller
 {
 
+    /**
+     *Allows access only to the administrator user
+     */
     public function __construct()
     {
         $this->middleware('admin');
@@ -131,7 +134,7 @@ class AdminBookController extends Controller
 
         Book::findOrFail($request->get('id'))->update($book);
 
-        Log::info("Libro con id: ".$request->get('id')." modificado con éxito");
+        Log::info("Libro con id: " . $request->get('id') . " modificado con éxito");
         return redirect()->route('AdminBook.index')->with('success', 'Libro modificado con éxito');
     }
 

@@ -14,7 +14,7 @@ class BookController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * @param Book $book
      * @return \Illuminate\Http\Response
      */
     public function showBook(Book $book)
@@ -35,23 +35,27 @@ class BookController extends Controller
             $user = Auth::user()->id;
 
             $ownComments = Book::select('reviews.commentary', 'users.name')->join('reviews', 'books.id', '=', 'reviews.book_id')
-            ->join('users', 'reviews.user_id', '=', 'users.id')->where('reviews.book_id', '=', $book->id)->where('reviews.user_id', '=', $user)
-            ->where('reviews.commentary', '!=', NULL)->get();
+                ->join('users', 'reviews.user_id', '=', 'users.id')->where('reviews.book_id', '=', $book->id)->where('reviews.user_id', '=', $user)
+                ->where('reviews.commentary', '!=', NULL)->get();
 
             $comments = Book::select('reviews.commentary', 'reviews.created_at', 'users.name')->join('reviews', 'books.id', '=', 'reviews.book_id')
-            ->join('users', 'reviews.user_id', '=', 'users.id')->where('reviews.book_id', '=', $book->id)->where('reviews.user_id', '!=', $user)
-            ->where('reviews.commentary', '!=', NULL)->orderBy('reviews.created_at')->paginate(10);
+                ->join('users', 'reviews.user_id', '=', 'users.id')->where('reviews.book_id', '=', $book->id)->where('reviews.user_id', '!=', $user)
+                ->where('reviews.commentary', '!=', NULL)->orderBy('reviews.created_at')->paginate(10);
             return view('book.showBooks', compact('book', 'othersBooks', 'averageRate', 'usersRate', 'ownComments', 'comments'));
-
         } else {
             $comments = Book::select('reviews.commentary', 'reviews.created_at', 'users.name')->join('reviews', 'books.id', '=', 'reviews.book_id')
-            ->join('users', 'reviews.user_id', '=', 'users.id')->where('reviews.book_id', '=', $book->id)->where('reviews.commentary', '!=', NULL)
-            ->orderBy('reviews.created_at')->paginate(10);
+                ->join('users', 'reviews.user_id', '=', 'users.id')->where('reviews.book_id', '=', $book->id)->where('reviews.commentary', '!=', NULL)
+                ->orderBy('reviews.created_at')->paginate(10);
         }
 
         return view('book.showBooks', compact('book', 'othersBooks', 'averageRate', 'usersRate', 'comments'));
     }
 
+    /**
+     *  Check if it has already been rated before and create a new rating
+     *
+     *  @return \Illuminate\Http\Response
+     */
     public function setQualify(Request $request)
     {
 

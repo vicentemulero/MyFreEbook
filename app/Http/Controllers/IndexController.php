@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\DB;
 
 class IndexController extends Controller
 {
+
+    /**
+     * Show the home page with needed resources
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function __invoke(Request $request)
     {
         $genres = Genre::all();
@@ -34,6 +41,13 @@ class IndexController extends Controller
         return view('book.welcome', compact('genres', 'latestBooks', 'mostReadBooks', 'bestsBooks', 'countBooks', 'countDownloads', 'countRatings'));
     }
 
+
+    /**
+     * Show the page with all books
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function allBooks()
     {
         $books = Book::orderBy('title')->paginate(18);
@@ -41,24 +55,37 @@ class IndexController extends Controller
         return view('book.welcomeAllbooks', compact('books', 'defaultOption'));
     }
 
-    public function contact(){
+    /**
+     * Show the form for contact
+     */
+    public function contact()
+    {
 
-    return view('user.formContact');
+        return view('user.formContact');
     }
 
-    public function about(){
+    /**
+     * Shows the page about the web information
+     */
+    public function about()
+    {
 
         return view('user.about');
     }
 
+    /**
+     * Sort the books according to the parameter selected in the view
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function sortBooks()
     {
 
 
         if (!empty($_GET['orderBy'])) {
 
-           session(['option' => $_GET['orderBy']]);
-           $option = session('option');
+            session(['option' => $_GET['orderBy']]);
+            $option = session('option');
         }
 
         $option = session('option');
@@ -89,21 +116,20 @@ class IndexController extends Controller
                 ->paginate(18);
 
             return view('book.welcomeAllbooks', compact('books', 'option'));
-            //unset($_SESSION['option']);
             session()->forget('option');
         } elseif ($option === 'name') {
             $defaultOption = 0;
             $books = Book::orderBy('title')->paginate(18);
 
             return view('book.welcomeAllbooks', compact('books', 'option', 'defaultOption'));
-           unset($_SESSION['option']);
-           session()->forget('option');
+            unset($_SESSION['option']);
+            session()->forget('option');
         } elseif ($option === 'latestBooks') {
             $defaultOption = 0;
             $books = Book::orderBy('created_at', 'desc')->paginate(18);
             return view('book.welcomeAllbooks', compact('books', 'option', 'defaultOption'));
-           unset($_SESSION['option']);
-           session()->forget('option');
+            unset($_SESSION['option']);
+            session()->forget('option');
         } else if ($option === 'bestsBooks') {
 
             $books = DB::table('authors')
@@ -129,10 +155,9 @@ class IndexController extends Controller
                 ->orderBy('reviewBooks', 'desc')
                 ->paginate(18);
 
-
             return view('book.welcomeAllBooks', compact('books', 'option'));
-           unset($_SESSION['option']);
-           session()->forget('option');
+            unset($_SESSION['option']);
+            session()->forget('option');
         };
     }
 }

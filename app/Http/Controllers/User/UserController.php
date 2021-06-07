@@ -8,6 +8,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 
@@ -15,6 +16,9 @@ use Illuminate\Support\Facades\Log;
 class UserController extends Controller
 {
 
+    /**
+     *Allows access only to the logged users
+     */
     public function __construct()
     {
         $this->middleware('auth');
@@ -51,8 +55,6 @@ class UserController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function showProfile()
@@ -61,7 +63,7 @@ class UserController extends Controller
         $userId = $user['id'];
 
 
-       $books = Book::join("downloads", "downloads.book_id", "=", "books.id")->where("downloads.user_id", "=", "$userId")->select('books.*')->orderBy('title')->distinct()->paginate(6);
+        $books = Book::join("downloads", "downloads.book_id", "=", "books.id")->where("downloads.user_id", "=", "$userId")->select('books.*')->orderBy('title')->distinct()->paginate(6);
 
         return view('user.profileUser', compact('user', 'books'));
     }
@@ -88,12 +90,18 @@ class UserController extends Controller
     public function update(Request $request)
     {
         try {
-        User::findOrFail($request->get('id'))->update($request->all());
-        Log::info("Datos editados por el usuario con id:". $request->get('id'));
-        return redirect()->route('user.showProfile')->with('success','Usuario  modificado con éxito');
-    } catch (Exception $e) {
-        return redirect()->route('user.showProfile')->with('danger','El usuario no se ha podido modificar');
-    }
+            $newPassword = $request->get('newPassword');
+            $user = request()->except('_token', 'id');
+            if (!empty($newPassword)) {
+                $user['password'] = Hash::make($newPassword);
+            }
+            User::findOrFail($request->get('id'))->update($user);
+            Log::info("Datos editados por el usuario con id:" . $request->get('id'));
+            return redirect()->route('user.showProfile')->with('success', 'Usuario  modificado con éxito');
+        } catch (Exception $e) {
+            Log::warning("El usuario con id: " . $request->get('id') . " no se ha podido modificar");
+            return redirect()->route('user.showProfile')->with('danger', 'El usuario no se ha podido modificar');
+        }
     }
 
     /**
@@ -108,10 +116,10 @@ class UserController extends Controller
         try {
             $user->delete();
             Log::info("Usuario con id: $id ha eliminado su cuenta");
-            return redirect('/')->with('success','Tu cuenta se ha eliminado, esperamos volver a verte pronto');
-        }catch (Exception $e) {
-            return redirect()->route('user.showProfile')->with('danger','El usuario no se ha podido borrar');
+            return redirect('/')->with('success', 'Tu cuenta se ha eliminado, esperamos volver a verte pronto');
+        } catch (Exception $e) {
+            Log::warning("Usuario con id: $id no ha podido eliminar su cuenta");
+            return redirect()->route('user.showProfile')->with('danger', 'El usuario no se ha podido borrar');
         }
-
     }
 }

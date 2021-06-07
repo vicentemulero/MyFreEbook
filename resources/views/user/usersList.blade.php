@@ -63,7 +63,7 @@
                         <td>{{ $user->updated_at }}</td>
 
                         <td>
-                            <form action="{{ route('user.destroy', $user['id']) }}" method="POST">
+                            <form action="{{ route('AdminUser.destroy', $user['id']) }}" method="POST">
                                 <a class="btn btn-primary" href="{{ route('AdminUser.edit', $user->id) }}">Editar</a>
                                 @method('DELETE')
                                 @csrf

@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Log;
 
 class AdminAuthorController extends Controller
 {
+
+    /**
+     *Allows access only to the administrator user
+     */
     public function __construct()
     {
         $this->middleware('admin');
@@ -24,7 +28,6 @@ class AdminAuthorController extends Controller
     {
         $authors = Author::OrderBy('name')->paginate(14);
         return view('Author.AuthorList', compact('authors'));
-
     }
 
     /**
@@ -46,7 +49,7 @@ class AdminAuthorController extends Controller
     public function store(Request $request)
     {
         Author::create($request->all());
-        return redirect()->route('AdminAuthor.index')->with('success','Autor creado con éxito');
+        return redirect()->route('AdminAuthor.index')->with('success', 'Autor creado con éxito');
     }
 
     /**
@@ -57,7 +60,6 @@ class AdminAuthorController extends Controller
      */
     public function show($id)
     {
-
     }
 
     /**
@@ -81,14 +83,14 @@ class AdminAuthorController extends Controller
      */
     public function update(Request $request)
     {
-        try{
-        Author::findOrFail($request->get('id'))->update($request->all());
-        Log::info("Autor con id:".$request->get('id')." modificado con éxito");
-        return redirect()->route('AdminAuthor.index')->with('success','Autor modificado con éxito');
-    } catch (Exception $e) {
-        Log::error("No se ha podido actualizar el autor con id:".$request->get('id'));
-        return redirect()->route('AdminAuthor.index')->with('error','No se ha podidio modificar el autor');
-    }
+        try {
+            Author::findOrFail($request->get('id'))->update($request->all());
+            Log::info("Autor con id:" . $request->get('id') . " modificado con éxito");
+            return redirect()->route('AdminAuthor.index')->with('success', 'Autor modificado con éxito');
+        } catch (Exception $e) {
+            Log::error("No se ha podido actualizar el autor con id:" . $request->get('id'));
+            return redirect()->route('AdminAuthor.index')->with('error', 'No se ha podidio modificar el autor');
+        }
     }
 
     /**
@@ -103,10 +105,10 @@ class AdminAuthorController extends Controller
         try {
             $author->delete();
             Log::info("Autor con id: $id eliminado con éxito");
-            return redirect()->route('AdminAuthor.index')->with('success','Autor eliminado con éxito');
+            return redirect()->route('AdminAuthor.index')->with('success', 'Autor eliminado con éxito');
         } catch (Exception $e) {
             Log::error("No se ha podido eliminar el autor con id: $id");
-            return redirect()->route('AdminAuthor.index')->with('error','No se ha podido eliminar el autor.');
+            return redirect()->route('AdminAuthor.index')->with('error', 'No se ha podido eliminar el autor.');
         }
     }
 }

@@ -1,15 +1,17 @@
 let divStars = document.querySelector('#divStars');
 let divStarsNoUsers = document.querySelector('#divStarsNoUsers');
 let qualifyStar = document.getElementById('averageRate').textContent;
-let inputUserId= document.getElementById('inputUserId');
-let inputBookId= document.getElementById('inputbookId');
+let inputUserId = document.getElementById('inputUserId');
+let inputBookId = document.getElementById('inputbookId');
 let spanUserCommentary = document.getElementById('spanUserCommentary');
 let buttonEditCommentary = document.getElementById('buttonEditCommentary');
 let buttonSendCommentary = document.getElementById('buttonSendCommentary');
 let buttonDeleteCommentary = document.getElementById('buttonDeleteCommentary');
 
 
-
+/**
+ * Shows the colored stars according to the value of the book
+ */
 for (let i = 1; i <= 5; i++) {
     if (qualifyStar >= i) {
         divStars.insertAdjacentHTML("beforeend", "<span><i class='fa fa-star' style='color: yellow 'id='" + i + "star' onclick='qualify(this)'></i></span>");
@@ -24,6 +26,11 @@ for (let i = 1; i <= 5; i++) {
 let inputStar = document.getElementById('inputStar');
 let starCount;
 
+/**
+ * Color the stars when the user clicks them
+ *
+ * @param item
+ */
 function qualify(item) {
     starCount = item.id[0];
     let nameStar = item.id.substring(1);
@@ -34,7 +41,6 @@ function qualify(item) {
         } else {
             document.getElementById((i + 1) + nameStar).style.color = "black";
         }
-
     }
 }
 
@@ -49,14 +55,16 @@ if (linkShowImputCommentary) {
 
 }
 
-
+/**
+ * Edit the user's comment using Fetch Api
+ */
 function editCommentary() {
     let newCommentary = document.getElementById('inputEditCommentary').value;
-    let userId= inputUserId.value;
-    let bookId= inputBookId.value;
+    let userId = inputUserId.value;
+    let bookId = inputBookId.value;
 
 
-    fetch("/api/ApiUserCommentary/editCommentary/?newCommentary=" + newCommentary+"&bookId=" + bookId+"&userId=" + userId, {
+    fetch("/api/ApiUserCommentary/editCommentary/?newCommentary=" + newCommentary + "&bookId=" + bookId + "&userId=" + userId, {
         method: 'get'
     }).then(function (response) {
         if (!response.ok) {
@@ -65,24 +73,25 @@ function editCommentary() {
         return response.json();
     }).then(function (data) {
 
-        spanUserCommentary.textContent=newCommentary;
-        buttonEditCommentary.style.display="block";
-        buttonDeleteCommentary.style.display="block";
+        spanUserCommentary.textContent = newCommentary;
+        buttonEditCommentary.style.display = "block";
+        buttonDeleteCommentary.style.display = "block";
         buttonSendCommentary.style.display = "none"
 
     }).catch(function (error) {
         console.error("Error en fetch de editar el comentario del usuario", error);
     });
-
-
 }
 
+/**
+ * Remove the user's comment using Fetch Api
+ */
 function deleteCommentary() {
-    let userId= inputUserId.value;
-    let bookId= inputBookId.value;
+    let userId = inputUserId.value;
+    let bookId = inputBookId.value;
 
 
-    fetch("/api/ApiUserCommentary/deleteCommentary/?&bookId=" + bookId+"&userId=" + userId, {
+    fetch("/api/ApiUserCommentary/deleteCommentary/?&bookId=" + bookId + "&userId=" + userId, {
         method: 'get'
     }).then(function (response) {
         if (!response.ok) {
@@ -91,10 +100,10 @@ function deleteCommentary() {
         return response.json();
     }).then(function (data) {
 
-spanUserCommentary.textContent= "Tu comentario ha sido eliminado";
-buttonEditCommentary.style.display="none";
-buttonSendCommentary.style.display = "none"
-buttonDeleteCommentary.style.display="none";
+        spanUserCommentary.textContent = "Tu comentario ha sido eliminado";
+        buttonEditCommentary.style.display = "none";
+        buttonSendCommentary.style.display = "none"
+        buttonDeleteCommentary.style.display = "none";
 
     }).catch(function (error) {
         console.error("Error en fetch de borrar el comentario del usuario", error);
@@ -118,6 +127,4 @@ if (spanUserCommentary) {
     });
 
     buttonDeleteCommentary.addEventListener('click', deleteCommentary);
-
-
 };

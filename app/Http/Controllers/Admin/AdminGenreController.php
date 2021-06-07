@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Log;
 
 class AdminGenreController extends Controller
 {
+    /**
+     *Allows access only to the administrator user
+     */
     public function __construct()
     {
         $this->middleware('admin');
@@ -25,7 +28,6 @@ class AdminGenreController extends Controller
     {
         $genres = Genre::OrderBy('name')->paginate(10);
         return view('genre.genreList', compact('genres'));
-
     }
 
     /**
@@ -47,7 +49,7 @@ class AdminGenreController extends Controller
     public function store(Request $request)
     {
         Genre::create($request->all());
-        return redirect()->route('AdminGenre.index')->with('success','Género creado con éxito');
+        return redirect()->route('AdminGenre.index')->with('success', 'Género creado con éxito');
     }
 
     /**
@@ -58,7 +60,6 @@ class AdminGenreController extends Controller
      */
     public function show($id)
     {
-
     }
 
     /**
@@ -69,9 +70,9 @@ class AdminGenreController extends Controller
      */
     public function edit($id)
     {
-        $genres= Genre::all();
+        $genres = Genre::all();
         $genre = Genre::find($id);
-        return view('genre.formEditGenre', compact('genre','genres'));
+        return view('genre.formEditGenre', compact('genre', 'genres'));
     }
 
     /**
@@ -83,12 +84,12 @@ class AdminGenreController extends Controller
      */
     public function update(Request $request)
     {
-        try{
-        Genre::findOrFail($request->get('cod'))->update($request->all());
-        return redirect()->route('AdminGenre.index')->with('success','Género modificado con éxito');
-    } catch (Exception $e) {
-        return redirect()->route('AdminGenre.index')->with('error','No se ha podido modificar el género');
-    }
+        try {
+            Genre::findOrFail($request->get('cod'))->update($request->all());
+            return redirect()->route('AdminGenre.index')->with('success', 'Género modificado con éxito');
+        } catch (Exception $e) {
+            return redirect()->route('AdminGenre.index')->with('error', 'No se ha podido modificar el género');
+        }
     }
 
     /**
@@ -103,10 +104,10 @@ class AdminGenreController extends Controller
         try {
             $genre->delete();
             Log::info("Género con id: $id eliminado con éxito");
-            return redirect()->route('AdminGenre.index')->with('success','Género eliminado con éxito');
+            return redirect()->route('AdminGenre.index')->with('success', 'Género eliminado con éxito');
         } catch (Exception $e) {
             Log::error("No se ha podido eliminar el género con id: $id");
-            return redirect()->route('AdminGenre.index')->with('error','No se ha podido eliminar el género.');
+            return redirect()->route('AdminGenre.index')->with('error', 'No se ha podido eliminar el género.');
         }
     }
 }

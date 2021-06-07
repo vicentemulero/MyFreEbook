@@ -10,30 +10,36 @@ class UserCommentaryApiController extends Controller
 {
 
 
-
+    /**
+     * Create a new comment on the review
+     * @return \Illuminate\Http\Response
+     */
     public function editCommentary()
     {
-        $newCommentary =$_GET["newCommentary"];
-        $userId= $_GET["userId"];
-        $bookId= $_GET["bookId"];
+        $newCommentary = $_GET["newCommentary"];
+        $userId = $_GET["userId"];
+        $bookId = $_GET["bookId"];
 
 
-         Review::where('user_id', '=', $userId)
-        ->where('book_id','=', $bookId)
-        ->update(['commentary' =>$newCommentary]);
+        Review::where('user_id', '=', $userId)
+            ->where('book_id', '=', $bookId)
+            ->update(['commentary' => $newCommentary]);
 
         return response(200);
     }
 
+    /**
+     * Remove a comment from the review
+     * @return \Illuminate\Http\Response
+     */
     public function deleteCommentary()
     {
-        $userId= $_GET["userId"];
-        $bookId= $_GET["bookId"];
+        $userId = $_GET["userId"];
+        $bookId = $_GET["bookId"];
 
         Review::where('user_id', '=', $userId)
-        ->where('book_id','=', $bookId)
-        ->update(['commentary' => NULL]);
-
+            ->where('book_id', '=', $bookId)
+            ->update(['commentary' => NULL]);
 
         return response(200);
     }

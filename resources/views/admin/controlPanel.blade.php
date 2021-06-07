@@ -6,15 +6,15 @@
                     <div class="col-12 col-md-4 text-center">
                         <h3 id="titleControlPanel">Panel de control</h3>
                     </div>
-                    <div class="col-12 col-md-8">
+                    <div class="col-12 col-md-8" >
                         <nav class="navbar navbar-expand-md navbar-dark ">
                             <button class="navbar-toggler" id="buttonCollapseCP" type="button" data-toggle="collapse"
                                 data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
                                 aria-label="Toggle navigation">
                                 <span class="navbar-toggler-icon"></span>
                             </button>
-                            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                                <ul class="navbar-nav nav ">
+                            <div class="collapse navbar-collapse" id="navbarNavDropdown" >
+                                <ul class="navbar-nav nav " id="optionsControlPanel">
                                     <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

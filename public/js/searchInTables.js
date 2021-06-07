@@ -9,13 +9,16 @@ let new_Td = document.getElementsByClassName('new_Td');
 
 new_Tr.style.display = "none";
 
-
+/**
+ * Convert the obtained date
+ * @param {*} date
+ */
 function convertDate(date) {
 
     let mm = parseInt(date.getMonth()) + 1;
     let dd = date.getDate();
     let yy = date.getFullYear();
-    let hh = date.getHours() - 2;
+    let hh = date.getHours();
     let min = parseInt(date.getMinutes());
     let ss = parseInt(date.getSeconds());
 
@@ -34,11 +37,12 @@ function convertDate(date) {
     }
 
     date = yy + "-" + mm + "-" + dd + " " + hh + ":" + min + ":" + ss;
-
     return date;
 }
 
-
+/**
+ * Displays the book searched by the administrator in the book list
+ */
 function searchTableBook() {
     let text = inputSearchBook.value.toLowerCase();
 
@@ -101,6 +105,10 @@ function searchTableBook() {
     }
 };
 
+
+/**
+ * Displays the author searched by the administrator in the author list
+ */
 function searchTableAuthor() {
     let text = inputSearchAuthor.value.toLowerCase();
 
@@ -155,7 +163,9 @@ function searchTableAuthor() {
     }
 }
 
-
+/**
+ * Displays the genre searched by the administrator in the genre list
+ */
 function searchTableGenre() {
     let text = inputSearchGenre.value.toLowerCase();
 
@@ -210,6 +220,9 @@ function searchTableGenre() {
     }
 }
 
+/**
+ * Displays the user searched by the administrator in the user list
+ */
 function searchTableUser() {
     let text = inputSearchUser.value.toLowerCase();
 

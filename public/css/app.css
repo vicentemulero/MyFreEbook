@@ -11078,7 +11078,7 @@ border-top-left-radius: 20px;
 #imputSearchBookWelcome{
     width:87%;
     margin-right: 3px;
-}
+    }
     #authorsTableInitials{
         display: block;
     }
@@ -11095,10 +11095,9 @@ border-top-left-radius: 20px;
         font-size: 2em;
     }
     .nav-lin{
-padding-left: 5px;
-
+    padding-left: 5px;
     color: rgba(0, 0, 0, 0.5);
-}
+    }
 }
 
 /*All covers with small size*/
@@ -11247,6 +11246,16 @@ padding-left: 5px;
     padding-top: 10px;
 }
 
+#optionsControlPanel {
+margin-left: 10%;
+
+}
+@media (max-width: 767px) {
+
+    #optionsControlPanel {
+ margin-left: 0%;
+ }
+ }
 
 
 /*Search no found div and tr with books founds*/

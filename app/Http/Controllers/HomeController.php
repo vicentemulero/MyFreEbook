@@ -8,9 +8,7 @@ use Illuminate\Support\Facades\Auth;
 class HomeController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     *Allows access only to the logged users
      */
     public function __construct()
     {
@@ -25,12 +23,11 @@ class HomeController extends Controller
     public function index()
     {
 
-            if (Auth::user()->roles[0]->name == 'Admin') {
-                return redirect()->route('AdminBook.index');
-            } elseif (Auth::user()->roles[0]->name == 'User') {
-                $user= User::findorfail(Auth::user()->id);
-                return redirect()->action('App\Http\Controllers\IndexController')->with('success', "¡ Hola $user->name !");
-            }
-
+        if (Auth::user()->roles[0]->name == 'Admin') {
+            return redirect()->route('AdminBook.index');
+        } elseif (Auth::user()->roles[0]->name == 'User') {
+            $user = User::findorfail(Auth::user()->id);
+            return redirect()->action('App\Http\Controllers\IndexController')->with('success', "¡ Hola $user->name !");
+        }
     }
 }

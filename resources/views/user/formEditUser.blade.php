@@ -23,7 +23,6 @@
 
                         <div class="col-md-6">
                             <input id="email" type="email" class="form-control" name="email" value="{{ $user['email'] }}">
-
                         </div>
                     </div>
 
@@ -31,8 +30,10 @@
                         <label for="password" class="col-md-4 col-form-label text-md-right">Contraseña</label>
 
                         <div class="col-md-6">
-                            <input id="password" type="password" class="form-control" name="password"
-                                value="{{ $user['password'] }}">
+                            <input id="newPassword" type="password" class="form-control" name="newPassword"
+                            placeholder="Introducir nueva contraseña">
+                            <input id="password" type="hidden" class="form-control" name="password"
+                            value="{{ $user['password'] }}">
                         </div>
                     </div>
 

@@ -11,7 +11,10 @@ use App\Models\User;
 class SearchApiController extends Controller
 {
 
-
+    /**
+     * Looks up the book in the database and returns it in JSON format
+     * @return \Illuminate\Http\Response
+     */
     public function book()
     {
         $text = $_GET["text"];
@@ -28,7 +31,10 @@ class SearchApiController extends Controller
         return response()->json($book, 200);
     }
 
-
+    /**
+     * Looks up the author in the database and returns it in JSON format
+     * @return \Illuminate\Http\Response
+     */
     public function author()
     {
         $text = $_GET["text"];
@@ -42,6 +48,10 @@ class SearchApiController extends Controller
         return response()->json($author, 200);
     }
 
+    /**
+     * Looks up the genre in the database and returns it in JSON format
+     * @return \Illuminate\Http\Response
+     */
     public function genre()
     {
         $text = $_GET["text"];
@@ -55,6 +65,10 @@ class SearchApiController extends Controller
         return response()->json($genre, 200);
     }
 
+    /**
+     * Looks up the user in the database and returns it in JSON format
+     * @return \Illuminate\Http\Response
+     */
     public function user()
     {
         $text = $_GET["text"];
